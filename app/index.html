@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Ocean - Data Science Journal</title>
+  <link rel="icon" type="image/png" href="ocean.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="./style.css">
+  <html data-theme="light" lang="en">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anton&display=swap">
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@2.6.0/dist/full.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/basscss@latest/css/basscss.min.css" rel="stylesheet" type="text/css" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+  <script type="text/javascript"
+    src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js">
+  </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js">
+  </script>
+
+
+</head>
+
+<body class="dark-mode">
+  <div id="loading-animation" class="loading-animation-hidden">
+  <div class="spinner"></div>
+</div>
+  <div class="network-container">
+  <!-- partial:index.partial.html -->
+  <div class="job">
+    <div class="header">
+      <div class="logo">
+<a href="./">        <h1><img src="ocean.png" class="header-logo">  DSJ</h1></a>
+
+      </div>
+      <div class="header-menu">
+        <a href="#" class="active"><i class="fa fa-home" "></i> Requests</a>
+        
+        <a href="#"><i class="fa 
+fa-gratipay"></i> Payments</a>
+        <a href="https://github.com/haailabs/SciDex" target="_blank"><i class="fa fa-github "></i> Github</a>
+      
+      </div>
+      <div class="user-settings">
+
+        <div class="dark-light">
+  <i class="fa fa-sun-o"></i>
+
+        </div>
+        <div class="user-menu connected">
+<i class="fa fa-bell-o"></i>
+        </div>
+
+        <div class="connected">
+          <img id="btn-disconnect" class="user-profile" src="user.png" alt="">
+          <ul id="user-options" class="user-options">
+             <p id="user" class="highlight p-4   pb-1"> address </p>
+                <li>Profile</li>
+    
+                <li>Payments</li>
+                <li id="logout">Log out</li>
+            </ul>
+        </div>
+        <div class="prepare">
+     
+  <div id="btn-connect" class="cursor-pointer group [transform:translateZ(0)] px-6 py-3 rounded-lg bg-[var(--inactive-color)] overflow-hidden relative before:absolute before:bg-[var(--active-color)] before:bottom-0 before:left-0 before:h-full before:w-full before:-translate-x-full hover:before:translate-x-0 before:transition before:ease-in-out before:duration-500 "><span  class="relative z-0 text-current  group-hover:text-gray-100 transition ease-in-out duration-500">Connect</span></div>
+     
+        </div>
+
+
+      </div>
+
+    </div>
+    <div class="wrapper">
+      <div class=" flex items-center justify-center w-full ">
+    <div class="text">
+      <img 
+    src="ocean.png"> </img>
+            <h1>Data Science Journal</h1>
+            <p>A Decentralized Peer Review System Built with <a  id="haai" href="https://github.com/haailabs/scidex" target="_blank"> SciDex </a> </p>
+
+          </div>
+          </div>
+      <div id="submit" class=" connected">
+        <div class="flex items-center justify-center w-full">
+
+          <div class="search-menu">
+            
+            <label for="fileInput"
+              class="flex glass flex-col items-center justify-center w-full h-36 border-2 border-[var(--upload)] border-dashed rounded-lg cursor-pointer bg-[var(--click-light-color)] hover:bg-[var(--after-click-color)]">
+              <div  class=" flex flex-col items-center justify-center pt-5 pb-6">
+                <svg aria-hidden="true" class="w-8 h-8 mb-3 text-[var(--upload)]" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                </svg>
+                <p class="mb-2 text-sm text-[var(--upload)] "><span>Click</span> or <span
+                  >drag & drop</span> a manuscript</p>
+                <p class="mb-2 text-sm text-[var(--upload)] ">to create a peer review request</p>
+                <p class="text-xs text-[var(--upload)]">PDF (MAX. 20MB)</p>
+              </div>
+              <input id="fileInput" type="file" class="hidden" />
+            </label>
+          
+          </div>
+          <!-- Main modal -->
+          <div id="details" tabindex="-1" aria-hidden="true"
+            class="fixed top-0 left-0 right-0 z-50 hidden bg-gray-600 bg-opacity-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+
+            <!-- Modal content -->
+            <div class="z-99999 bg-[var(--body-bg-color)] relative top-0 mx-auto p-5 border max-w-2xl shadow-lg rounded-md">
+              <button type="button" id="modal-hide"
+                class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                data-modal-hide="authentication-modal">
+                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="sr-only">Close modal</span>
+              </button>
+              <div class="z-9999 px-6 py-6 w-120 lg:px-8">
+
+                <h3 class="mb-4 text-xl font-medium ">Submit a Peer Review Request</h3>
+
+
+                <div class="grid gap-6 mb-6 md:grid-cols-2">
+                  <div>
+                    <label for="title">Title:</label><br>
+                    <input placeholder="Title"
+                    maxlength="100"
+                      class="box px-2 py-1 placeholder-slate-300 relative  rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full"
+                      type="text" id="title" name="title" value="">
+             <label for="comments">Request:</label>
+                    <input
+                     maxlength="300"
+                      class="box px-2 py-1 placeholder-slate-300  relative  rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full"
+                      type="text" id="request" name="request" value="">
+                  </div>
+                  <div>
+
+                   
+ <label for="comments">Bounty (MATIC):</label>
+                  <input
+  class="box px-2 py-1 placeholder-slate-300 relative  rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full"
+  type="number"
+  step="0.1"
+  id="bounty"
+  name="bounty"
+  value=""
+/>
+                    <label for="duration">Duration (days):</label>
+                    <input
+                      class="box px-2 py-1 placeholder-slate-300 relative  rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full"
+                      type="number" id="duration" name="duration" value="1" step="1">
+                  </div>
+                </div>      
+                <label for="specialties">Specialties:</label>
+                <select id="select-role" name="roles[]" multiple placeholder="Choose specialties..." autocomplete="on"
+                  class=" block w-full rounded-sm cursor-pointer focus:outline-none" multiple>
+                <option value="1">Machine Learning</option>
+<option value="2">Data Analysis</option>
+<option value="3">Deep Learning</option>
+<option value="4">Probability Theory</option>
+<option value="5">Artificial Intelligence</option>
+<option value="6">Healthcare</option>
+<option value="7">Data Engineering</option>
+<option value="8">Business Analytics</option>
+<option value="9">Software Engineering</option>
+<option value="10">Business Intelligence</option>
+<option value="11">Data Mining</option>
+<option value="12">Mathematics</option>
+<option value="13">Natural Language Processing</option>
+<option value="14">Algorithms</option>
+<option value="15">Big Data</option>
+<option value="16">Cybersecurity</option>
+<option value="17">Finance</option>
+<option value="18">Marketing</option>
+<option value="19">Blockchain</option>
+<option value="20">Data Warehousing</option>
+<option value="21">Architecture</option>
+<option value="22">Data collection</option>
+<option value="23">Data Visualization</option>
+
+
+                </select>
+                 <br>
+                 <label for="data">Linked data (DID):</label><br>
+                    <input placeholder="Example: https://market.oceanprotocol.com/asset/did:op:DID"
+                    maxlength="100"
+                      class="box px-2 py-1 placeholder-slate-300 relative rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full"
+                      type="text" id="data" name="data" value="">
+  
+    <br>
+       <br>
+                <label for="abstract">Abstract:</label>
+           <textarea
+ class="box px-2 py-1 placeholder-slate-300 relative  rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full  "
+    maxlength="1000"
+    id="abstract" name="abstract" value=""
+    style="height: 350px;" placeholder="To ensure your abstract is as informative as possible, please consider the following:
+
+Clearly state the problem statement or research question that your study is addressing, as well as any assumptions or hypotheses you've made.
+Describe the data science methods or techniques used in your study, including the data sources, data preprocessing steps, and the algorithms or models applied.
+Highlight the key insights and outcomes obtained from your data analysis, making sure to include any quantifiable results, such as accuracy, precision, recall, or other relevant metrics.
+Convey the main conclusions of your analysis, and discuss the implications of your findings in the context of data science or the application domain.
+Avoid using data science jargon or acronyms without first defining them. The abstract should be accessible to a broad audience.
+Given the abstract's brevity, ensure every word counts. Be concise but comprehensive, covering all key aspects of your work."></textarea>
+
+       
+                <br>
+
+                <button class="search-buttons card-buttons"
+                  id="submitHIPButton">Submit</button>
+
+
+
+
+              </div>
+            </div>
+          </div>
+
+
+
+
+        </div>
+      </div>
+      <div class="main-container">
+        <div class="search-type">
+          <div class="medcred">
+            <div class="medcred-title">How it Works</div>
+            <div class="medcred-subtitle">
+              
+              This dapp enables authors to submit manuscripts for peer review, ensuring qualified reviewers with anonymous identities. A smart contract deployed on the Polygon Mumbai testnet manages decentralized payments and bounties. Click below to mint the qualification token for all specialties and submit a test review.
+              In production, these tokens should be assigned selectively to reviewers based on their qualifications.
+             </div>
+
+           <a  > <button id="mintNFT" class="search-buttons">Get Qualification NFT →</button></a>
+          </div>
+          <div id="filterDiv" class="job-time ">
+            <div class="job-time-title">Specialties</div>
+            <div class="job-wrapper">
+              <div id="specs" class="type-container">
+    <input type="checkbox" id="job0" class="job-style" checked>
+    <label for="job0">Machine Learning</label>
+    <span id="spec0" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job1" class="job-style" checked>
+    <label for="job1">Data Analysis</label>
+    <span id="spec1" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job2" class="job-style" checked>
+    <label for="job2">Deep Learning</label>
+    <span id="spec2" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job3" class="job-style" checked>
+    <label for="job3">Probability Theory</label>
+    <span id="spec3" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job4" class="job-style" checked>
+    <label for="job4">Artificial Intelligence</label>
+    <span id="spec4" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job5" class="job-style" checked>
+    <label for="job5">Healthcare</label>
+    <span id="spec5" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job6" class="job-style" checked>
+    <label for="job6">Data Engineering</label>
+    <span id="spec6" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job7" class="job-style" checked>
+    <label for="job7">Business Analytics</label>
+    <span id="spec7" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job8" class="job-style" checked>
+    <label for="job8">Software Engineering</label>
+    <span id="spec8" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job9" class="job-style" checked>
+    <label for="job9">Business Intelligence</label>
+    <span id="spec9" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job10" class="job-style" checked>
+    <label for="job10">Data Mining</label>
+    <span id="spec10" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job11" class="job-style" checked>
+    <label for="job11">Mathematics</label>
+    <span id="spec11" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job12" class="job-style" checked>
+    <label for="job12">Natural Language Processing</label>
+    <span id="spec12" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job13" class="job-style" checked>
+    <label for="job13">Algorithms</label>
+    <span id="spec13" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job14" class="job-style" checked>
+    <label for="job14">Big Data</label>
+    <span id="spec14" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job15" class="job-style" checked>
+    <label for="job15">Cybersecurity</label>
+    <span id="spec15" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job16" class="job-style" checked>
+    <label for="job16">Finance</label>
+    <span id="spec16" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job17" class="job-style" checked>
+    <label for="job17">Marketing</label>
+    <span id="spec17" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job18" class="job-style" checked>
+    <label for="job18">Blockchain</label>
+    <span id="spec18" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job19" class="job-style" checked>
+    <label for="job19">Data Warehousing</label>
+    <span id="spec19" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job20" class="job-style" checked>
+    <label for="job20">Architecture</label>
+    <span id="spec20" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job21" class="job-style" checked>
+    <label for="job21">Data collection</label>
+    <span id="spec21" class="job-number">0</span>
+</div>
+<div class="type-container">
+    <input type="checkbox" id="job22" class="job-style" checked>
+    <label for="job22">Data Visualization</label>
+    <span id="spec22" class="job-number">0</span>
+</div>
+
+
+   <button id="Filter" class="search-buttons card-buttons">Filter</button>
+            </div>
+          </div>
+
+        </div>
+        <div id="loading" class="searched-jobs"></div>
+        <div id="payments" class="searched-jobs">
+          <table id="responseRefsTable"></table>
+          <p id="noReview"></p>
+        </div>
+        <div id="main" class="searched-jobs">
+          <div class="searched-bar ">
+            <div class="searched-show">Showing <span id="numHIPs"> 0 </span> Manuscripts</div>
+           <div class="searched-sort">
+<div class="dropdown">
+  <button id="choice" class="dropbtn">Latest requests  <i class="fa fa-caret-down"></i>
+    
+  </button>
+  <div class="dropdown-content">
+    <a  id="byLatest" href="#">Latest requests</a>
+    <a  id="byTop" href="#">Top Manuscripts</a>
+    <a id="byTimeLeft" href="#">Closing soon</a>
+    <a id="byReview" href="#">Most reviews</a>
+    <a id="byNoReview" href="#">Least reviews</a>
+    <a id="byBounty" href="#">Highest Bounties</a>
+  </div>
+</div>
+
+</div>
+
+          </div>
+          <div id='board' class="job-cards">
+
+
+
+          </div>
+          <div class="job-overview">
+            <div id="sideboard" class="job-overview-cards">
+
+
+            </div>
+            <div class="job-explain">
+              <img class="job-bg" alt="">
+              <div class="job-logos">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="background-color:#f76754">
+                  <path xmlns="http://www.w3.org/2000/svg" d="M0 .5h4.2v23H0z" fill="#042b48" data-original="#212121">
+                  </path>
+                  <path xmlns="http://www.w3.org/2000/svg" d="M15.4.5a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2z"
+                    fill="#fefefe" data-original="#f4511e"></path>
+                </svg>
+              </div>
+              <div class="job-explain-content">
+                <div class="job-title-wrapper">
+                  <div class="job-card-title"></div>
+                  <div class="job-action">
+
+
+
+                    <path
+                      d="M20.8 4.6a5.5 5.5 0 00-7.7 0l-1.1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.7 1-1.1a5.5 5.5 0 000-7.8z" />
+                    </svg>
+
+                  </div>
+                </div>
+                <div class="job-subtitle-wrapper">
+                  <div class="company-name">0x3E9...9306 </div>
+                  <div class="posted"><span class="since"> </span> 
+                  <span class="app-number" id="numReviews"> </span> <span class="text-[var(--active-color)]" >review(s)</span></div>
+                </div>
+               
+                <div class="explain-bar">
+                  <div class="explain-contents">
+                    <div class="explain-title">Remaining Time</div>
+                    <div id="deadline-value" class="explain-subtitle">1 day</div>
+                  </div>
+                  <div class="explain-contents">
+                    <div class="explain-title">Bounty</div>
+                    <div id="bounty-value" class="explain-subtitle">0.01 MATIC</div>
+                  </div>
+               
+                  <div class="explain-contents">
+                    <div class="explain-title"> Manuscript</div>
+                    <div class="explain-subtitle">
+                      <a class="downloadPDF">
+                      <i class="fa fa-download"></i> Download PDF</a>
+                      
+                      </div>
+                  </div>
+                     <div class="explain-contents">
+                    <div class="explain-title">Linked Data</div>
+                    <div id="medcred-value" class="explain-subtitle">-</div>
+                  </div>
+                </div>
+               
+                  <div class="overview-text">
+                  <div class="overview-text-header">Request</div>
+                  <div class="overview-text-request" id="request"></div>
+                </div>
+                
+                <div class="overview-text">
+                  <div class="overview-text-header">Abstract</div>
+                  <div class="overview-text-subheader" id="abstract"></div>
+                </div>
+              
+  <div class="overview-text existing-reviews">
+   
+     
+        
+             </div>
+       <div class="job-subtitle-wrapper">
+                <span class="text-[var(--subtitle-color)]" id="qualification">Connect your wallet to submit reviews</span>
+                  
+                </div>         
+             
+                  <div class="overview-text " id="review-area">
+
+<p class="highlight"> Your Recommendation </p>
+<select id="recommendation" name="reco" placeholder="Choose recommendation..." class="box block w-full rounded-sm cursor-pointer focus:outline-none">
+
+  <option value="0" selected>Minor revision</option>
+  <option value="1">Major revision</option>
+  <option value="2">Accept</option>
+  <option value="3">Reject</option>
+</select><br>
+                    <p class="highlight"> Your Review </p>
+                
+             <textarea
+ class="box px-2 py-1 placeholder-slate-300 relative  rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full  "
+    id="review" name="review" value=""
+    style="height: 350px;"
+    maxlength="1500"
+                   placeholder="
+To ensure your review adds maximum value, please consider these key points:
+
+Identify the problem statement or research question that the manuscript addresses, including any hypotheses or assumptions made.
+Review the data science methodologies and techniques used. Consider whether they are appropriate for the study and effectively address the research question.
+Assess the quality, validity, and reliability of the data used, as well as the robustness of the data analysis results.
+Critically evaluate the conclusions drawn from the data analysis. Do they make sense? Are they substantiated by the data and analysis provided?
+Identify any potential sources of bias in the data selection, data processing, or data analysis stages. Additionally, note any limitations in the study due to the data used or methodologies employed.
+Propose insightful suggestions on how the manuscript can be enhanced. This may include recommending additional data that could be used, other data science techniques that could be applied, or further analyses that could strengthen the findings.
+If possible, offer suggestions on how the authors can provide more comprehensive explanations or visualizations of their results for better understanding.
+Deliver your feedback in a respectful and professional manner, refraining from personal attacks or disrespectful comments.
+Thank you for your detailed and thoughtful review of this manuscript. Your time and expertise are greatly appreciated."
+               ></textarea>
+                  
+                  <button class="search-buttons card-buttons" id="submit-review-button" >
+            Submit</button>
+               
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- partial -->
+  <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+  <script>
+    new TomSelect('#select-role', {
+      maxItems: 3,
+    });
+  </script>
+
+  <script src="	https://unpkg.com/axios@0.24.0/dist/axios.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+    <script type="text/javascript" src="./contracts.js"></script>
+ 
+  <script type="text/javascript" src="./script.js"></script>
+   <script type="text/javascript" src="./client.js"></script>
+</div>
+
+
+<footer id="mobile-footer">
+  <div id="mobile-menu">
+    <div id="mobile-footer-container">
+      <div class="mobile-link">
+        <a href="#" id="reqMobile" class=" active "><i class="fa fa-home fa-2x"></i></a>
+      </div>
+ 
+      <div class="mobile-link">
+        <a href="#" id="payMobile" class=""><i class="fa 
+fa-gratipay fa-2x"></i></a>
+      </div>
+      
+         <div class="mobile-link">
+        
+        <a href="https://github.com/haailabs/SciDex" target="_blank" id="aboutMobile" class=""><i class="fa fa-github fa-2x"></i></a>
+      </div>
+    
+    </div>
+  </div>
+  <div id="mobile-footer-close">
+    <button id="mobile-footer-btn">
+      <div class="mobile-btn-close is-rotating-back">
+        <span></span>
+      </div>
+    </button>
+  </div>
+</footer>
+</body>
+
+</html>

@@ -1,13 +1,3 @@
-@font-face {
-  font-family: "reg";
-  src: url("fonts/visby_regular.otf") format("truetype");
-}
-
-@font-face {
-  font-family: "bol";
-  src: url("fonts/visby_bold.otf") format("truetype");
-}
-
 * {
   outline: none;
   box-sizing: border-box;

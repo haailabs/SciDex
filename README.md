@@ -10,7 +10,7 @@
 9. [Acknowledgements](#acknowledgements)
 
 
-## 1. Overview {#overview}
+## 1. Overview 
 ### Video Walkthrough: https://www.youtube.com/watch?v=OdQnCx3MnIM
 
 SciDex empowers Decentralized Science (DeSci) and domain-expert DAOs to effortlessly launch their own peer-reviewed academic journals.
@@ -20,16 +20,16 @@ With SciDex, authors can confidently submit manuscripts for peer review, ensurin
 This repository provides a full stack solution, including the backend, frontend, and smart contracts required for SciDex. The user interface is built using Vanilla JavaScript, making it framework agnostic and adaptable to various development environments. 
 
 
-## 2. Example Implementations {#example-implementations}
+## 2. Example Implementations
 - [Data Science Journal](https://q4xjfj-3000.csb.app/) *(Note: This work benefited from a Shipyard Yard from Ocean Protocol, but is not otherwise affiliated or endorsed by Ocean Protocol. The Ocean bubble logo is used for illustration and is a registered trademark of its owner.)*
 
 - [Medical Peer Review](https://u6iyjz-3000.csb.app/) *(Note: This work was done in partnership with MedDAO, but is not otherwise affiliated or endorsed by MedDAO. The MedDAO logo is used for illustration and is a registered trademark of its owner.)*
 
-## 3. Why Decentralize Scientific Peer Review? {#why-decentralize-scientific-peer-review}
+## 3. Why Decentralize Scientific Peer Review?
 Traditional academic publishing is dyingfacing a significant decline. The industry's profitability is concentrated in the hands of a few dominant publishers, leading to predatory costs for authors and unfair compensation for reviewers (that is none whatsoever). The peer review process, plagued by biases and prolonged timelines, hinders the timely dissemination of research. Additionally, creators in academia are often inadequately compensated for their valuable contributions. However, decentralization emerges as a promising solution to revive this dying system. By embracing decentralized technologies like blockchain, we can introduce transparency, efficiency, and inclusivity, breathing new life into academic publishing and ensuring a vibrant and sustainable future.
 
 
-## File Structure {#structure}
+## Structure 
 
 The repository is structured into the following components:
 ### Stack
@@ -50,7 +50,7 @@ The repository is structured into the following components:
 - `/app/script.js`: Implements various UI utilities.
 
 
-## 5. Running the Repository {#running-the-repository}
+## 5. Running the Repository
 1. Clone the repository to your local machine.
    ```
    git clone https://github.com/haailabs/SciDex
@@ -74,7 +74,7 @@ The repository is structured into the following components:
 5. The application should now be accessible on port 3000. Open your web browser and visit `http://localhost:3000` to access it.
 
 
-## 6. Customizing SciDex {#customizing-scidex}
+## 6. Customizing SciDex
 
 ### Specialties
 
@@ -98,7 +98,7 @@ The repository is structured into the following components:
 
 1. Have fun with `style.css` and `index.html`.
 
-## Contract Documentation {#technical-details}
+## Contract Documentation 
 
 **Constructor**
 - `constructor()`: Initializes the contract and sets the owner address to the `msg.sender`.
@@ -133,8 +133,8 @@ This function is used in the contract to encode the specialties of a manuscript 
 
 Additionally, there are various modifiers (`onlyIfPaidEnough`, `onlyIfHoldsNFT`, `onlyIfHasNotResponded`, `onlyIfStillOpen`, `onlyIfClosed`, `onlyIfNoResponses`) that check certain conditions before executing the respective functions.
 
-## 8. License {#license}
+## 8. License 
 All code, except the ERC-1155 contract is shared under a CC-BY-NC-SA-4.0 license. Logos are the property of their respective owners and are used for illustration.
 
-## 9. Acknowledgements {#acknowledgements}
+## 9. Acknowledgements 
 The authors gratefully acknowledge the support received from Ocean Protocol through a Shipyard Grant. 

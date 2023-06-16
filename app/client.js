@@ -325,16 +325,16 @@ var hash;
 var label = document.querySelector('label[for="fileInput"]');
 var fileInput = document.getElementById("fileInput");
 
-label.ondragover = function (e) {
+label.ondragover = function(e) {
   e.preventDefault();
   this.style.borderColor = "blue";
 };
 
-label.ondragleave = function () {
+label.ondragleave = function() {
   this.style.borderColor = "";
 };
 
-label.ondrop = function (e) {
+label.ondrop = function(e) {
   e.preventDefault();
   this.style.borderColor = "";
 
@@ -404,7 +404,7 @@ document.getElementById("fileInput").onchange = async () => {
       });
   }
 };
-document.getElementById("modal-hide").onclick = function () {
+document.getElementById("modal-hide").onclick = function() {
   document.getElementById("details").style.display = "none";
   document.getElementById("fileInput").value = null;
 };
@@ -704,7 +704,7 @@ async function refresh() {
     upvoteIcon.classList.add("fa", "fa-arrow-up");
     upvoteButton.appendChild(upvoteIcon);
     // Attach an event listener to the upvote button
-    upvoteButton.addEventListener("click", async function () {
+    upvoteButton.addEventListener("click", async function() {
       // Retrieve 'i' from the 'data-index' attribute of 'this' (the button)
       const index = this.getAttribute("data-index").substring(1);
 
@@ -737,7 +737,7 @@ async function refresh() {
     downvoteIcon.classList.add("fa", "fa-arrow-down");
     downvoteButton.appendChild(downvoteIcon);
     // Attach an event listener to the downvote button
-    downvoteButton.addEventListener("click", async function () {
+    downvoteButton.addEventListener("click", async function() {
       // Retrieve 'i' from the 'data-index' attribute of 'this' (the button)
       const index = this.getAttribute("data-index").substring(1);
 
@@ -870,8 +870,8 @@ async function refresh() {
           " " +
           convertUnixTime(
             -parseInt(currentBlock) +
-              parseInt(db[i].date) +
-              parseInt(db[i].duration)
+            parseInt(db[i].date) +
+            parseInt(db[i].duration)
           );
       }
     } else {
@@ -934,159 +934,20 @@ async function refresh() {
     );
     const jobBg = document.querySelector(".job-bg");
 
-    //To view details when clicking on card from the front page
-    button1.addEventListener("click", async () => {
-      index = parseInt(div.id);
-      const logo = div.querySelector("svg");
-      let b = toColor(db[index].title);
-      console.log(b);
-
-      jobBg.style.background = `repeating-linear-gradient(
-  45deg,
-  ${b},
-  ${b} 10%,
-  ${"var(--active-light-color)"} 10%,
-  ${"var(--active-light-color)"} 20%
-)`;
-      const title = div.querySelector(".job-card-title");
-      const abstract = document.querySelector(".overview-text-subheader");
-      const author = document.querySelector(".company-name");
-      const DID = document.querySelector("#medcred-value");
-      if (db[index].DID != "") {
-        const link = document.createElement("a");
-        link.href = db[index].DID;
-        link.target = "_blank";
-        link.textContent = "Open";
-        link.style.color = "var(--active-color)";
-        DID.innerHTML = "";
-        DID.appendChild(link);
-      } else {
-        DID.removeChild(DID.firstChild);
-        DID.innerHTML = "-";
-      }
-      let currentBlock;
-      // Get the latest block details
-      if (web3.currentProvider) {
-        currentBlock = await web3.eth.getBlock("latest");
-        if (typeof currentBlock === "undefined") {
-          document.querySelector("#deadline-value").innerHTML = "Unknown";
-        } else {
-          currentBlock = currentBlock.timestamp;
-          document.querySelector("#deadline-value").innerHTML = convertUnixTime(
-            -parseInt(currentBlock) +
-              parseInt(db[index].date) +
-              parseInt(db[index].duration)
-          );
-        }
-      } else {
-        document.querySelector("#deadline-value").innerHTML = " No wallet";
-      }
-      if (web3.currentProvider) {
-        const since = document.querySelector(".since");
-        since.innerHTML =
-          "Posted " +
-          convertUnixTime(parseInt(currentBlock) - parseInt(db[index].date)) +
-          " ago";
-      }
-      author.innerHTML =
-        db[index].proposer.substring(0, 5) +
-        "..." +
-        db[index].proposer.substr(db[index].proposer.length - 4, 4);
-      abstract.innerHTML = db[index].abstract;
-      const downloadPDF = document.querySelector(".downloadPDF");
-      downloadPDF.href = "./uploads/" + index + ".pdf";
-
-      downloadPDF.target = "_blank";
-      const request = document.querySelector(".overview-text-request");
-      request.innerHTML = db[index].response;
-      jobDetailTitle.textContent = title.textContent;
-      jobLogos.innerHTML = logo.outerHTML;
-      wrapper.classList.add("detail-page");
-      wrapper.scrollTop = 0;
-      num = document.querySelector(".app-number");
-
-      num.innerHTML = db[index].numReviews;
-
-      num.id = index;
-      bountyValue = document.querySelector("#bounty-value");
-      bountyValue.innerHTML = parseInt(db[index].bounty) / 10 ** 18 + " MATIC";
-      await displayReviews(index);
-
-      if (
-        web3.currentProvider &&
-        web3.currentProvider.isConnected() &&
-        accounts
-      ) {
-        let oldButton = document.getElementById("submit-review-button");
-        // Select the parent element that contains the button
-        const parentElement = document.getElementById("review-area");
-        parentElement.style.display = "block";
-        document.querySelector("#qualification").style.display = "none";
-        parentElement.removeChild(oldButton);
-        submitReviewButton = document.createElement("button");
-        submitReviewButton.id = "submit-review-button";
-        submitReviewButton.className = "search-buttons card-buttons"; // Add the appropriate class names
-        submitReviewButton.innerText = "Submit";
-
-        submitReviewButton.addEventListener("click", async function () {
-          await checkWalletConnection();
-          //Wallet should now be connected
-
-          console.log("Wallet connected:", window.ethereum.selectedAddress);
-          problem = await contract.methods.HIPIndex(index).call();
-          let manuscriptSpecs = [];
-          s = problem[5];
-          console.log(s);
-          for (let k = 0; k < 23; k++) {
-            if ((s & (1 << k)) != 0) {
-              manuscriptSpecs.push(k);
-            }
-          }
-          console.log("manuscriptSpecs:", manuscriptSpecs);
-          console.log(manuscriptSpecs);
-          console.log(NFT);
-          let c = findCommonElements(manuscriptSpecs, NFT);
-
-          if (c.length === 0) {
-            alert(
-              "Qualification NFT Needed: You are unable to Review this Manuscript. "
-            );
-          } else {
-            let selectElement = document.getElementById("recommendation");
-            let review = document.getElementById("review");
-            let responseValue = selectElement.value;
-            let responseHash = await sha256(review.value);
-            console.log("specialty", c[0]);
-            console.log("index", index);
-            console.log("responseValue", responseValue);
-            console.log("hash", "0x" + responseHash);
-            submitReview(
-              contract,
-              c,
-              index,
-              responseValue,
-              responseHash,
-              problem,
-              review
-            );
-          }
-        });
-        // Add the new button to the parent element
-        parentElement.appendChild(submitReviewButton);
-      } else {
-        document.getElementById("review-area").style.display = "none";
-        document.getElementById("qualification").style.display = "block";
-      }
-    });
+  
 
     //To view details when clicking on card from the inner list
-    jobCard.addEventListener("click", async () => {
-      index = parseInt(div.id);
-      const logo = div.querySelector("svg");
-      let b = toColor(db[index].title);
-      console.log(b);
+    jobCard.addEventListener("click", handleJobCardClick);
+//To view details when clicking on card from the front page
+    button1.addEventListener("click", handleJobCardClick);
+    async function handleJobCardClick() {
+      {
+        index = parseInt(div.id);
+        const logo = div.querySelector("svg");
+        let b = toColor(db[index].title);
+        console.log(b);
 
-      jobBg.style.background = `repeating-linear-gradient(
+        jobBg.style.background = `repeating-linear-gradient(
   45deg,
   ${b},
   ${b} 10%,
@@ -1094,138 +955,142 @@ async function refresh() {
   ${"var(--active-light-color)"} 20%
 )`;
 
-      const title = div.querySelector(".job-card-title");
-      const abstract = document.querySelector(".overview-text-subheader");
-      const author = document.querySelector(".company-name");
-      const DID = document.querySelector("#medcred-value");
-      if (db[index].DID != "") {
-        const link = document.createElement("a");
-        link.href = db[index].DID;
-        link.target = "_blank";
-        link.textContent = "Open";
-        link.style.color = "var(--active-color)";
-        DID.innerHTML = "";
-        DID.appendChild(link);
-      } else {
-        DID.removeChild(DID.firstChild);
-        DID.innerHTML = "-";
-      }
-      let currentBlock;
-      // Get the latest block details
-      if (web3.currentProvider && web3.currentProvider.isConnected()) {
-        currentBlock = await web3.eth.getBlock("latest");
-        if (typeof currentBlock === "undefined") {
-          document.querySelector("#deadline-value").innerHTML = "Unknown";
+        const title = div.querySelector(".job-card-title");
+        const abstract = document.querySelector(".overview-text-subheader");
+        const author = document.querySelector(".company-name");
+        const DID = document.querySelector("#medcred-value");
+        if (db[index].DID != "") {
+          const link = document.createElement("a");
+          link.href = db[index].DID;
+          link.target = "_blank";
+          link.textContent = "Open";
+          link.style.color = "var(--active-color)";
+          DID.innerHTML = "";
+          DID.appendChild(link);
         } else {
-          currentBlock = currentBlock.timestamp;
+          DID.removeChild(DID.firstChild);
+          DID.innerHTML = "-";
+        }
+        let currentBlock;
+        // Get the latest block details
+        if (web3.currentProvider && web3.currentProvider.isConnected()) {
+          currentBlock = await web3.eth.getBlock("latest");
+          if (typeof currentBlock === "undefined") {
+            document.querySelector("#deadline-value").innerHTML = "Unknown";
+          } else {
+            currentBlock = currentBlock.timestamp;
 
-          document.querySelector("#deadline-value").innerHTML = convertUnixTime(
-            -parseInt(currentBlock) +
+            document.querySelector("#deadline-value").innerHTML = convertUnixTime(
+              -parseInt(currentBlock) +
               parseInt(db[index].date) +
               parseInt(db[index].duration)
-          );
+            );
+          }
+        } else {
+          document.querySelector("#deadline-value").innerHTML = " No wallet";
         }
-      } else {
-        document.querySelector("#deadline-value").innerHTML = " No wallet";
-      }
-      if (web3.currentProvider) {
-        const since = document.querySelector(".since");
-        since.innerHTML =
-          "Posted " +
-          convertUnixTime(parseInt(currentBlock) - parseInt(db[index].date)) +
-          " ago";
-      }
+        if (web3.currentProvider) {
+          const since = document.querySelector(".since");
+          since.innerHTML =
+            "Posted " +
+            convertUnixTime(parseInt(currentBlock) - parseInt(db[index].date)) +
+            " ago";
+        }
 
-      document.querySelector(".existing-reviews").innerHTML = ""; // Clear the existing content
-      author.innerHTML =
-        db[index].proposer.substring(0, 5) +
-        "..." +
-        db[index].proposer.substr(db[index].proposer.length - 4, 4);
-      abstract.innerHTML = db[index].abstract;
-      downloadPDF = document.querySelector(".downloadPDF");
-      downloadPDF.href = "./uploads/" + index + ".pdf";
+        document.querySelector(".existing-reviews").innerHTML = ""; // Clear the existing content
+        author.innerHTML =
+          db[index].proposer.substring(0, 5) +
+          "..." +
+          db[index].proposer.substr(db[index].proposer.length - 4, 4);
+        abstract.innerHTML = db[index].abstract;
+        downloadPDF = document.querySelector(".downloadPDF");
+        downloadPDF.href = "./uploads/" + index + ".pdf";
 
-      downloadPDF.target = "_blank";
-      const request = document.querySelector(".overview-text-request");
-      request.innerHTML = db[index].response;
-      jobDetailTitle.textContent = title.textContent;
-      jobLogos.innerHTML = logo.outerHTML;
-      wrapper.classList.add("detail-page");
-      wrapper.scrollTop = 0;
-      num = document.querySelector(".app-number");
+        downloadPDF.target = "_blank";
+        const request = document.querySelector(".overview-text-request");
+        request.innerHTML = db[index].response;
+        jobDetailTitle.textContent = title.textContent;
+        jobLogos.innerHTML = logo.outerHTML;
+        wrapper.classList.add("detail-page");
+        wrapper.scrollTop = 0;
+        num = document.querySelector(".app-number");
 
-      num.innerHTML = db[index].numReviews;
-      num.id = index;
+        num.innerHTML = db[index].numReviews;
+        num.id = index;
+        bountyValue = document.querySelector("#bounty-value");
+        bountyValue.innerHTML = parseInt(db[index].bounty) / 10 ** 18 + " MATIC";
+        await displayReviews(index);
 
-      await displayReviews(index);
+        if (
+          web3.currentProvider &&
+          web3.currentProvider.isConnected() &&
+          accounts
+        ) {
+          document.getElementById("qualification").style.display = "none";
+          let oldButton = document.getElementById("submit-review-button");
+          // Select the parent element that contains the button
+          const parentElement = document.getElementById("review-area");
+          parentElement.style.display = "block";
+          parentElement.removeChild(oldButton);
+          submitReviewButton = document.createElement("button");
+          submitReviewButton.id = "submit-review-button";
+          submitReviewButton.className = "search-buttons card-buttons"; // Add the appropriate class names
+          submitReviewButton.innerText = "Submit";
 
-      if (
-        web3.currentProvider &&
-        web3.currentProvider.isConnected() &&
-        accounts
-      ) {
-        document.getElementById("qualification").style.display = "none";
-        let oldButton = document.getElementById("submit-review-button");
-        // Select the parent element that contains the button
-        const parentElement = document.getElementById("review-area");
-        parentElement.style.display = "block";
-        parentElement.removeChild(oldButton);
-        submitReviewButton = document.createElement("button");
-        submitReviewButton.id = "submit-review-button";
-        submitReviewButton.className = "search-buttons card-buttons"; // Add the appropriate class names
-        submitReviewButton.innerText = "Submit";
+          submitReviewButton.addEventListener("click", async function() {
+            await checkWalletConnection();
+            //Wallet should now be connected
 
-        submitReviewButton.addEventListener("click", async function () {
-          await checkWalletConnection();
-          //Wallet should now be connected
-
-          console.log("Wallet connected:", window.ethereum.selectedAddress);
-          problem = await contract.methods.HIPIndex(index).call();
-          let manuscriptSpecs = [];
-          s = problem[5];
-          console.log(s);
-          for (let k = 0; k < 23; k++) {
-            if ((s & (1 << k)) != 0) {
-              manuscriptSpecs.push(k);
+            console.log("Wallet connected:", window.ethereum.selectedAddress);
+            problem = await contract.methods.HIPIndex(index).call();
+            let manuscriptSpecs = [];
+            s = problem[5];
+            console.log(s);
+            for (let k = 0; k < 23; k++) {
+              if ((s & (1 << k)) != 0) {
+                manuscriptSpecs.push(k);
+              }
             }
-          }
-          console.log("manuscriptSpecs:", manuscriptSpecs);
-          console.log(manuscriptSpecs);
-          console.log(NFT);
-          let c = findCommonElements(manuscriptSpecs, NFT);
+            console.log("manuscriptSpecs:", manuscriptSpecs);
+            console.log(manuscriptSpecs);
+            console.log(NFT);
+            let c = findCommonElements(manuscriptSpecs, NFT);
 
-          if (c.length === 0) {
-            alert(
-              "Qualification NFT Needed: You are unable to Review this Manuscript. "
-            );
-          } else {
-            let selectElement = document.getElementById("recommendation");
-            let review = document.getElementById("review");
-            let responseValue = selectElement.value;
-            let responseHash = await sha256(review.value);
-            console.log("specialty", c[0]);
-            console.log("index", index);
-            console.log("responseValue", responseValue);
-            console.log("hash", "0x" + responseHash);
+            if (c.length === 0) {
+              alert(
+                "Qualification NFT Needed: You are unable to Review this Manuscript. "
+              );
+            } else {
+              let selectElement = document.getElementById("recommendation");
+              let review = document.getElementById("review");
+              let responseValue = selectElement.value;
+              let responseHash = await sha256(review.value);
+              console.log("specialty", c[0]);
+              console.log("index", index);
+              console.log("responseValue", responseValue);
+              console.log("hash", "0x" + responseHash);
 
-            submitReview(
-              contract,
-              c,
-              index,
-              responseValue,
-              responseHash,
-              problem,
-              review
-            );
-          }
-        });
-        // Add the new button to the parent element
-        parentElement.appendChild(submitReviewButton);
-      } else {
-        document.getElementById("review-area").style.display = "none";
-        document.getElementById("qualification").style.display = "block";
+              submitReview(
+                contract,
+                c,
+                index,
+                responseValue,
+                responseHash,
+                problem,
+                review
+              );
+            }
+          });
+          // Add the new button to the parent element
+          parentElement.appendChild(submitReviewButton);
+        } else {
+          document.getElementById("review-area").style.display = "none";
+          document.getElementById("qualification").style.display = "block";
+        }
       }
-    });
+      ;
+
+    }
 
     document.getElementById("numHIPs").innerHTML = HIPcount;
   }
@@ -1350,7 +1215,7 @@ function filterCardsBySpecialties(specialtyArray) {
   }
 }
 
-document.getElementById("Filter").addEventListener("click", function () {
+document.getElementById("Filter").addEventListener("click", function() {
   // Get all the checkboxes
   const checkboxes = document.querySelectorAll(".job-style");
 
@@ -1383,7 +1248,7 @@ function sortCardsLatest() {
     card.style.order = index;
   });
 }
-document.getElementById("byTop").addEventListener("click", function (event) {
+document.getElementById("byTop").addEventListener("click", function(event) {
   event.preventDefault(); // Prevent the default action of the <a> element
   document.getElementById("choice").innerHTML =
     "Top Manuscripts <i class='fa fa-caret-down'></i>";
@@ -1416,7 +1281,7 @@ function sortCardsTop() {
   });
 }
 
-document.getElementById("byLatest").addEventListener("click", function (event) {
+document.getElementById("byLatest").addEventListener("click", function(event) {
   event.preventDefault(); // Prevent the default action of the <a> element
   document.getElementById("choice").innerHTML =
     "Latest Requests <i class='fa fa-caret-down'></i>";
@@ -1457,7 +1322,7 @@ function sortCardsByBounty() {
   });
 }
 
-document.getElementById("byBounty").addEventListener("click", function (event) {
+document.getElementById("byBounty").addEventListener("click", function(event) {
   event.preventDefault(); // Prevent the default action of the <a> element
   document.getElementById("choice").innerHTML =
     "Highest Bounties <i class='fa fa-caret-down'></i>";
@@ -1504,7 +1369,7 @@ function sortCardsByReviews(option) {
   });
 }
 
-document.getElementById("byReview").addEventListener("click", function (event) {
+document.getElementById("byReview").addEventListener("click", function(event) {
   event.preventDefault(); // Prevent the default action of the <a> element
   document.getElementById("choice").innerHTML =
     "Most reviews <i class='fa fa-caret-down'></i>";
@@ -1513,7 +1378,7 @@ document.getElementById("byReview").addEventListener("click", function (event) {
 
 document
   .getElementById("byNoReview")
-  .addEventListener("click", function (event) {
+  .addEventListener("click", function(event) {
     event.preventDefault(); // Prevent the default action of the <a> element
     document.getElementById("choice").innerHTML =
       "Least reviews <i class='fa fa-caret-down'></i>";
@@ -1574,7 +1439,7 @@ function sortCardsByTimeLeft() {
 
 document
   .getElementById("byTimeLeft")
-  .addEventListener("click", function (event) {
+  .addEventListener("click", function(event) {
     event.preventDefault(); // Prevent the default action of the <a> element
     document.getElementById("choice").innerHTML =
       "Closing soon <i class='fa fa-caret-down'></i>";
@@ -1725,15 +1590,13 @@ async function displayReviews(index) {
         const listItem = document.createElement("li");
         listItem.innerHTML = `
           <div class="overview-text-subheader bg-[var(--theme-bg-color)] relative top-0 mx-auto p-5 border max-w-2xl shadow-lg rounded-md">
-            <h2 class="font-bold mb-2">Review #${
-              parseInt(review.responseNum) + 1
-            }</h2>
+            <h2 class="font-bold mb-2">Review #${parseInt(review.responseNum) + 1
+          }</h2>
             <p class="font-bold"> Recommendation: <span class="font-normal">${reco(
-              review.recommendation
-            )}</span> </p> 
-            <p class="font-bold"> Review:  <span class="font-normal">${
-              review.review
-            }</span></p>
+            review.recommendation
+          )}</span> </p> 
+            <p class="font-bold"> Review:  <span class="font-normal">${review.review
+          }</span></p>
           </div>`;
         reviewsList.appendChild(listItem);
       });

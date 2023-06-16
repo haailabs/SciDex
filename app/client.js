@@ -1074,8 +1074,8 @@ async function refresh() {
         // Add the new button to the parent element
         parentElement.appendChild(submitReviewButton);
       } else {
-        document.getElementById("review-area").display = "none";
-        document.getElementById("qualification").display = "block";
+        document.getElementById("review-area").style.display = "none";
+        document.getElementById("qualification").style.display = "block";
       }
     });
 

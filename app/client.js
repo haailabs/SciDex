@@ -645,7 +645,7 @@ document
 
 var db;
 var numProposers;
-
+var index;
 //Common specialties between reviewer and manuscript
 function findCommonElements(manuscriptSpecs, NFT) {
   const commonElements = [];
@@ -1081,7 +1081,7 @@ async function refresh() {
 
     //To view details when clicking on card from the inner list
     jobCard.addEventListener("click", async () => {
-      let index = parseInt(div.id);
+      index = parseInt(div.id);
       const logo = div.querySelector("svg");
       let b = toColor(db[index].title);
       console.log(b);
